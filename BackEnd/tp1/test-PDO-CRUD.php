@@ -1,5 +1,4 @@
 <?php
-// Inclusion du fichier d'initialisation PDO
 require_once("initPDO.php");
 ?>
 <!DOCTYPE html>
@@ -56,8 +55,14 @@ class User {
                     <td>{$user->name}</td>
                     <td>{$user->email}</td>
                     <td>
-                        <a href='test-PDO-CRUD.php?edit={$user->id}' class='btn btn-warning btn-sm'>Modifier</a>
-                        <a href='test-PDO-CRUD.php?delete={$user->id}' class='btn btn-danger btn-sm' onclick='return confirm(\"Supprimer cet utilisateur ?\")'>Supprimer</a>
+                        <div class='text-center'>
+                            <a href='test-PDO-CRUD.php?edit={$user->id}' class='btn btn-warning btn-sm'>Modifier</a>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            <a href='test-PDO-CRUD.php?delete={$user->id}' class='btn btn-danger btn-sm' onclick='return confirm(\"Supprimer cet utilisateur ?\")'>Supprimer</a>
+                        </div>
+
                     </td>
                   </tr>";
         }
@@ -107,6 +112,7 @@ if ($id) {
     </div>
     <button type="submit" class="btn btn-primary"> <?php echo $id ? "Modifier" : "Ajouter"; ?> </button>
 </form>
+<br>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
