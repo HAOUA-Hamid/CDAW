@@ -34,5 +34,6 @@ class UserModel {
         $stmt->execute(['id' => $id]);
         return $stmt->rowCount() > 0;
     }
+    
 }
 ?>
