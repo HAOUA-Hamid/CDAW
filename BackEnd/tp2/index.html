@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script>
+        const apiBase = "http://localhost:8080/CDAW/BackEnd/tp2/api.php/users";
+
+        async function fetchUsers() {
+            const response = await fetch(apiBase);
+            const users = await response.json();
+            const userList = document.getElementById("userList");
+            userList.innerHTML = "";
+            users.forEach(user => {
+                userList.innerHTML += `
+                    <li>${user.name} (${user.email}) 
+                        <button onclick="deleteUser(${user.id})">Delete</button>
+                        <button onclick="editUser(${user.id}, '${user.name}', '${user.email}')">Edit</button>
+                    </li>`;
+            });
+        }
+
+        async function addUser() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            if (!name || !email) return alert("Name and Email are required");
+
+            await fetch(apiBase, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email })
+            });
+            fetchUsers();
+        }
+
+        async function deleteUser(id) {
+            await fetch(`${apiBase}/${id}`, { method: "DELETE" });
+            fetchUsers();
+        }
+
+        function editUser(id, name, email) {
+            document.getElementById("userId").value = id;
+            document.getElementById("name").value = name;
+            document.getElementById("email").value = email;
+            document.getElementById("addBtn").style.display = "none";
+            document.getElementById("updateBtn").style.display = "inline";
+        }
+
+        async function updateUser() {
+            const id = document.getElementById("userId").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            if (!name || !email) return alert("Name and Email are required");
+
+            await fetch(`${apiBase}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email })
+            });
+            resetForm();
+            fetchUsers();
+        }
+
+        function resetForm() {
+            document.getElementById("userId").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("addBtn").style.display = "inline";
+            document.getElementById("updateBtn").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchUsers);
+    </script>
+</head>
+<body>
+    <h1>User Management</h1>
+
+    <input type="hidden" id="userId">
+    <input type="text" id="name" placeholder="Name">
+    <input type="email" id="email" placeholder="Email">
+    <button id="addBtn" onclick="addUser()">Add User</button>
+    <button id="updateBtn" onclick="updateUser()" style="display: none;">Update User</button>
+
+    <ul id="userList"></ul>
+</body>
+</html>

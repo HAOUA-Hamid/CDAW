@@ -1,40 +1,33 @@
 <?php
 require "bootstrap.php";
 
+// Allow cross-origin requests
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-function getRoute($url) {
-    $url = trim($url, '/');
-    $urlSegments = explode('/', $url);
+// Extract the request path
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$basePath = "/CDAW/BackEnd/tp2/api.php"; // Adjust based on your WAMP setup
 
-    $scheme = ['controller', 'params'];
-    $route = [];
+// Remove base path to get the actual route
+$route = str_replace($basePath, "", $uri);
+$route = trim($route, "/");
 
-    foreach ($urlSegments as $index => $segment) {
-        if ($scheme[$index] == 'params') {
-            $route['params'] = array_slice($urlSegments, $index);
-            break;
-        } else {
-            $route[$scheme[$index]] = $segment;
-        }
-    }
+// Example: "users" or "users/5"
+$routeParts = explode("/", $route);
 
-    return $route;
-}
-
-$uri = $_GET['request'] ?? ''; 
-$route = getRoute($uri);
+// Extract controller and optional ID
+$controllerName = $routeParts[0] ?? null;
+$resourceId = $routeParts[1] ?? null;
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
-$controllerName = $route['controller'] ?? null;
 
 switch ($controllerName) {
     case 'users':
-        $controller = new UsersController($requestMethod);
+        $controller = new UsersController($requestMethod, $resourceId);
         break;
     default:
         header("HTTP/1.1 404 Not Found");
@@ -42,3 +35,4 @@ switch ($controllerName) {
 }
 
 $controller->processRequest();
+?>
