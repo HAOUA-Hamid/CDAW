@@ -16,3 +16,6 @@ User::addSqlQuery('USER_GET_BY_ID',
 
 User::addSqlQuery('USER_UPDATE',
     'UPDATE USER SET USER_LOGIN = :login, USER_EMAIL = :email, USER_ROLE = :role, USER_PWD = :pwd, USER_NAME = :name, USER_SURNAME = :surname WHERE USER_ID = :id');
+
+User::addSqlQuery('USER_DELETE',
+    'DELETE FROM USER WHERE USER_ID = :id');

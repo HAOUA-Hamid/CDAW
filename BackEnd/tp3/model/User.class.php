@@ -24,6 +24,24 @@ class User extends Model {
             'surname' => $data['surname'] ?? null
         ];
         $stm = parent::exec('USER_UPDATE', $params);
-        return $stm->rowCount() > 0; // Return true if a row was updated
+        return $stm->rowCount() > 0;
+    }
+
+    public static function create($data) {
+        $params = [
+            'login' => $data['login'] ?? null,
+            'email' => $data['email'] ?? null,
+            'role' => $data['role'] ?? null,
+            'pwd' => $data['pwd'] ?? null,
+            'name' => $data['name'] ?? null,
+            'surname' => $data['surname'] ?? null
+        ];
+        $stm = parent::exec('USER_CREATE', $params);
+        return static::db()->lastInsertId(); // Return new user ID
+    }
+
+    public static function delete($id) {
+        $stm = parent::exec('USER_DELETE', ['id' => $id]);
+        return $stm->rowCount() > 0; // Return true if deleted
     }
 }
