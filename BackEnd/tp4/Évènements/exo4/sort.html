@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 4px; }
+        th { cursor: pointer; }
+        th:hover { background: yellow; }
+    </style>
+</head>
+<body>
+    <table id="grid">
+        <thead>
+            <tr>
+                <th data-type="number">ID</th>
+                <th data-type="string">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>7</td><td>John</td></tr>
+            <tr><td>2</td><td>Pete</td></tr>
+            <tr><td>36</td><td>Ann</td></tr>
+            <tr><td>87</td><td>Eugene</td></tr>
+            <tr><td>1</td><td>Ilya</td></tr>
+        </tbody>
+    </table>
+    <script src="sort.js"></script>
+</body>
+</html>
