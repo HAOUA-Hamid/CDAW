@@ -1,1 +1,3 @@
-alert("Number One");
+function showNumberOne() {
+    alert("Number One");
+}
